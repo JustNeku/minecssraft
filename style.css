@@ -36,59 +36,211 @@ main {
         height: 100%;
     }
 
-    .block {
+    .block-container {
+        display: none;
         transform-style: preserve-3d;
         width: var(--block-size);
-        height: var(--block-size);
+        aspect-ratio: 1;
         position: absolute;
-        background-color: red;
-        display: var(--display);
+        transform: translateX(calc((var(--column)) * var(--block-size))) translateY(calc((var(--row)) * var(--block-size))) translateZ(calc((var(--layer)) * var(--block-size)));
 
-        transform: 
-            translateX(calc((var(--column)) * var(--block-size)))
-            translateY(calc((var(--row)) * var(--block-size)))
-            translateZ(calc((var(--layer)) * var(--block-size)))
-        ;
-        
-        &>* {
+        &:has(input:not([data-block="air"]):checked) {
+            display: block;
+        }
+
+        .block {
+            display: none;
             width: inherit;
-            height: inherit;
+            aspect-ratio: inherit;
             position: absolute;
+            transform-style: preserve-3d;
+
+            &>* {
+                position: absolute;
+                height: 100%;
+                aspect-ratio: inherit;
+                background-size: cover;
+                image-rendering: pixelated;
+
+                &:hover {
+                    box-shadow: inset 0 0 2px 0.25rem #ffffffaa, inset 0 0 0 1px #000000aa;
+                }
+
+            }
+
+            .left, .right, .front, .back {
+                background-image: var(--texture--side);
+            }
+            .top {
+                background-image: var(--texture--top);
+            }
+            .bottom {
+                background-image: var(--texture--bottom);
+            }
         }
 
-        &:has(input:checked) {
-            --display: block;
-        }
-        &:not(:has(input:checked)) {
-            --display: none;
+        input {
+            display: none;
         }
     }
 
-    .bottom {
-        background-color: #ff0000;
-    }
     .top {
-        background-color: #0000ff;
         transform: translateZ(var(--block-size));
     }
 
+    .bottom {
+        filter: brightness(0.5);
+    }
+
     .back {
-        background-color: #ffff00;
         transform: rotate3d(1, 0, 0, 90deg);
         transform-origin: top;
+        filter: brightness(0.65);
     }
 
     .left {
-        background-color: #00ff00;
-        transform: rotate3d(0, 1, 0, 90deg) translateX(calc(-1 * var(--block-size) / 2)) translateZ(calc(-1 * var(--block-size) / 2))
+        transform: rotate3d(0, 1, 0, 90deg) translateX(calc(-1 * var(--block-size) / 2)) translateZ(calc(-1 * var(--block-size) / 2));
+        filter: brightness(0.85);
     }
+
     .right {
-        background-color: #00ff00;
-        transform: rotate3d(0, 1, 0, 90deg) translateX(calc(-1 * var(--block-size) / 2)) translateZ(calc(var(--block-size) / 2))
+        transform: rotate3d(0, 1, 0, 90deg) translateX(calc(-1 * var(--block-size) / 2)) translateZ(calc(var(--block-size) / 2));
+        filter: brightness(0.75);
     }
 
     .front {
-        background-color: #ff00ff;
         transform: rotate3d(1, 0, 0, 90deg) translateY(calc(var(--block-size) / 2)) translateZ(calc(-1 * var(--block-size) / 2));
+        filter: brightness(1.2)
+    }
+
+    &:has(input[value="cobble"]:checked) {
+        .block {
+            --texture-top: url('assets/cobble.png');
+            --texture-side: url('assets/cobble.png');
+            --texture-bottom: url('assets/cobble.png');
+
+            .cobble {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="dirt"]:checked) {
+        .block {
+            --texture-top: url('assets/dirt.png');
+            --texture-side: url('assets/dirt.png');
+            --texture-bottom: url('assets/dirt.png');
+
+            .dirt {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="grass"]:checked) {
+        .block {
+            --texture-top: url('assets/grass--top.png');
+            --texture-side: url('assets/grass--side.png');
+            --texture-bottom: url('assets/dirt.png');
+
+            .grass {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="gravel"]:checked) {
+        .block {
+            --texture-top: url('assets/gravel.png');
+            --texture-side: url('assets/gravel.png');
+            --texture-bottom: url('assets/gravel.png');
+
+            .gravel {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="leaves"]:checked) {
+        .block {
+            --texture-top: url('assets/leaves.png');
+            --texture-side: url('assets/leaves.png');
+            --texture-bottom: url('assets/leaves.png');
+
+            .leaves {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="tree"]:checked) {
+        .block {
+            --texture-top: url('assets/tree--top.png');
+            --texture-side: url('assets/tree.png');
+            --texture-bottom: url('assets/tree--top.png');
+
+            .tree {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="glass"]:checked) {
+        .block {
+            --texture-top: url('assets/glass.png');
+            --texture-side: url('assets/glass.png');
+            --texture-bottom: url('assets/glass.png');
+
+            .glass {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="sand"]:checked) {
+        .block {
+            --texture-top: url('assets/sand.png');
+            --texture-side: url('assets/sand.png');
+            --texture-bottom: url('assets/sand.png');
+
+            .sand {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="wood"]:checked) {
+        .block {
+            --texture-top: url('assets/wood.png');
+            --texture-side: url('assets/wood.png');
+            --texture-bottom: url('assets/wood.png');
+
+            .wood {
+                display: block;
+            }
+        }
+    }
+
+    &:has(input[value="air"]:checked) {
+        .block {
+            --texture-top: url('assets/air.png');
+            --texture-side: url('assets/air.png');
+            --texture-bottom: url('assets/air.png');
+
+            .air {
+                display: block;
+            }
+        }
+    }
+}
+
+
+@keyframes rotate {
+    0% {
+        transform: perspective(1600px) rotateX(45deg) rotateZ(0deg);
+    }
+
+    100% {
+        transform: perspective(1600px) rotateX(45deg) rotateZ(360deg);
     }
 }

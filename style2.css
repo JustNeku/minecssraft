@@ -1,0 +1,446 @@
+:root {
+    --block-size: 64px;
+
+    --max-rotation: 1000turn;
+    --max-height: 1000rem;
+    --animation-duration: 10000s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #6c9aff;
+}
+
+main, main * {
+    transform-style: preserve-3d;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+
+    &:has(input[value="cobble"]) {
+        .block.cobble {
+            display: block;
+        }
+    }
+    &:has(input[value="grass"]) {
+        .block.grass {
+            display: block;
+        }
+    }
+    &:has(input[value="glass"]) {
+        .block.glass {
+            display: block;
+        }
+    }
+    &:has(input[value="sand"]) {
+        .block.sand {
+            display: block;
+        }
+    }
+    &:has(input[value="tree"]) {
+        .block.tree {
+            display: block;
+        }
+    }
+    &:has(input[value="wood"]) {
+        .block.wood {
+            display: block;
+        }
+    }
+    &:has(input[value="dirt"]) {
+        .block.dirt {
+            display: block;
+        }
+    }
+    &:has(input[value="gravel"]) {
+        .block.gravel {
+            display: block;
+        }
+    }
+}
+
+.world {
+    position: relative;
+    transform-origin: center;
+
+    .block-container {
+        display: none;
+        width: var(--block-size);
+        aspect-ratio: 1;
+        position: absolute;
+        transform:
+            translateX(calc(var(--column) * var(--block-size) - 288px)) translateY(calc((var(--row)) * var(--block-size) - 288px)) translateZ(calc((var(--layer)) * var(--block-size)));
+
+        &:has(input:not([data-block="air"]):checked) {
+            display: block;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        .block {
+            display: none;
+            width: inherit;
+            aspect-ratio: inherit;
+            position: absolute;
+
+            &>label {
+                position: absolute;
+                height: 100%;
+                aspect-ratio: inherit;
+                background-size: cover;
+                image-rendering: pixelated;
+
+                &:hover {
+                    box-shadow: inset 0 0 2px 0.25rem #ffffffaa, inset 0 0 0 1px #000000aa;
+                }
+
+                &:not([for]):hover {
+                    box-shadow: inset 0 0 1rem 0.25rem #ff0044aa, inset 0 0 0 1px #000000aa;
+                }
+            }
+
+            .left,
+            .right,
+            .front,
+            .back {
+                background-image: var(--texture-side);
+            }
+
+            .top {
+                background-image: var(--texture-top);
+            }
+
+            .bottom {
+                background-image: var(--texture-bottom);
+            }
+
+            .top {
+                transform: translateZ(var(--block-size));
+                filter: brightness(1.15);
+            }
+
+            .bottom {
+                filter: brightness(0.5);
+            }
+
+            .back {
+                transform-origin: bottom;
+                transform: rotateX(270deg) translateZ(calc(-1 * var(--block-size)));
+                filter: brightness(0.65);
+            }
+
+            .left {
+                filter: brightness(0.85);
+                transform-origin: bottom left;
+                transform: rotateZ(90deg) rotateX(270deg) translateX(calc(-1 * var(--block-size)));
+            }
+
+            .right {
+                filter: brightness(0.75);
+                transform-origin: bottom right;
+                transform: rotateZ(90deg) rotateX(270deg);
+            }
+
+            .front {
+                transform-origin: bottom;
+                transform: rotateX(270deg);
+                filter: brightness(1);
+            }
+        }
+
+        &:has(input[data-block="cobble"]:checked) {
+            .block {
+                --texture-top: url('assets/cobble.png');
+                --texture-side: url('assets/cobble.png');
+                --texture-bottom: url('assets/cobble.png');
+
+                .cobble {
+                    display: block;
+                }
+            }
+        }
+
+        &:has(input[data-block="dirt"]:checked) {
+            .block {
+                --texture-top: url('assets/dirt.png');
+                --texture-side: url('assets/dirt.png');
+                --texture-bottom: url('assets/dirt.png');
+
+                .dirt {
+                    display: block;
+                }
+            }
+        }
+
+        &:has(input[data-block="grass"]:checked) {
+            .block {
+                --texture-top: url('assets/grass--top.png');
+                --texture-side: url('assets/grass--side.png');
+                --texture-bottom: url('assets/dirt.png');
+            }
+        }
+
+        &:has(input[data-block="gravel"]:checked) {
+            .block {
+                --texture-top: url('assets/gravel.png');
+                --texture-side: url('assets/gravel.png');
+                --texture-bottom: url('assets/gravel.png');
+
+                .gravel {
+                    display: block;
+                }
+            }
+        }
+
+        &:has(input[data-block="leaves"]:checked) {
+            .block {
+                --texture-top: url('assets/leaves.png');
+                --texture-side: url('assets/leaves.png');
+                --texture-bottom: url('assets/leaves.png');
+
+                .leaves {
+                    display: block;
+                }
+            }
+        }
+
+        &:has(input[data-block="tree"]:checked) {
+            .block {
+                --texture-top: url('assets/tree--top.png');
+                --texture-side: url('assets/tree.png');
+                --texture-bottom: url('assets/tree--top.png');
+
+                .tree {
+                    display: block;
+                }
+            }
+        }
+
+        &:has(input[data-block="glass"]:checked) {
+            .block {
+                --texture-top: url('assets/glass.png');
+                --texture-side: url('assets/glass.png');
+                --texture-bottom: url('assets/glass.png');
+
+                .glass {
+                    display: block;
+                }
+            }
+        }
+
+        &:has(input[data-block="sand"]:checked) {
+            .block {
+                --texture-top: url('assets/sand.png');
+                --texture-side: url('assets/sand.png');
+                --texture-bottom: url('assets/sand.png');
+
+                .sand {
+                    display: block;
+                }
+            }
+        }
+
+        &:has(input[data-block="wood"]:checked) {
+            .block {
+                --texture-top: url('assets/wood.png');
+                --texture-side: url('assets/wood.png');
+                --texture-bottom: url('assets/wood.png');
+
+                .wood {
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+.hud {
+    position: fixed;
+    bottom: 1rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .blocks {
+        background-color: #526897;
+        translate: 0 0 5000000rem;
+        border: 2px solid #15203a;
+        display: flex;
+        flex-direction: row;
+
+        label {
+            padding: 0.5rem;
+            display: grid;
+            box-shadow: inset 0 0 0 2px #354464, inset 4px 4px 0 0 #27324a;
+            img {
+                width: 4rem;
+                object-fit: contain;
+            }
+
+            input {
+                display: none;
+            }
+
+            &:has(input:checked) {
+                scale: 3;
+                box-shadow: 0 0 3rem white;
+            }
+        }
+    }
+}
+
+.camera {
+    transform: perspective(1600px) rotateX(45deg);
+}
+
+
+.camera-rotate {
+    animation: rotate-clockwise var(--animation-duration) paused linear;
+}
+main:has(button[data-rotate="clockwise"]:active) {
+    .camera-rotate {
+        animation-play-state: running;
+    }
+}
+@keyframes rotate-clockwise {
+    from {
+        transform: rotateZ(0);
+    }
+    to {
+        transform: rotateZ(var(--max-rotation));
+    }
+}
+
+.camera-rotate-counter {
+    animation: rotate-counter-clockwise var(--animation-duration) paused linear;
+}
+main:has(button[data-rotate="counter-clockwise"]:active) {
+    .camera-rotate-counter {
+        animation-play-state: running;
+    }
+}
+@keyframes rotate-counter-clockwise {
+    from {
+        transform: rotateZ(0);
+    }
+    to {
+        transform: rotateZ(calc(-1 * var(--max-rotation)));
+    }
+}
+
+.camera-up {
+    animation: move-up 100s paused linear;
+}
+main:has(button[data-move="up"]:active) {
+    .camera-up {
+        animation-play-state: running;
+    }
+}
+@keyframes move-up {
+    from {
+        translate: 0 0 0;
+    }
+    to {
+        translate: 0 0 var(--max-height);
+    }
+}
+
+.camera-down {
+    animation: move-down 100s paused linear;
+}
+main:has(button[data-move="down"]:active) {
+    .camera-down {
+        animation-play-state: running;
+    }
+}
+@keyframes move-down {
+    from {
+        translate: 0 0 0;
+    }
+    to {
+        translate: 0 0 calc(-1 * var(--max-height));
+    }
+}
+
+.camera-forward {
+    animation: move-forward 100s paused linear;
+}
+main:has(button[data-move="forward"]:active) {
+    .camera-forward {
+        animation-play-state: running;
+    }
+}
+@keyframes move-forward {
+    from {
+        translate: 0 0 0;
+    }
+    to {
+        translate: 0 var(--max-height) 0;
+    }
+}
+
+.camera-back {
+    animation: move-back 100s paused linear;
+}
+main:has(button[data-move="back"]:active) {
+    .camera-back {
+        animation-play-state: running;
+    }
+}
+@keyframes move-back {
+    from {
+        translate: 0 0 0;
+    }
+    to {
+        translate: 0 calc(-1 * var(--max-height)) 0;
+    }
+}
+
+.camera-rotate-down {
+    animation: rotate-down var(--animation-duration) paused linear;
+}
+main:has(button[data-rotate="rotate-down"]:active) {
+    .camera-rotate-down {
+        animation-play-state: running;
+    }
+}
+@keyframes rotate-down {
+    from {
+        transform: rotateX(0);
+    }
+    to {
+        transform: rotateX(var(--max-rotation));
+    }
+}
+
+.camera-rotate-up {
+    animation: rotate-up var(--animation-duration) paused linear;
+}
+main:has(button[data-rotate="rotate-up"]:active) {
+    .camera-rotate-up {
+        animation-play-state: running;
+    }
+}
+@keyframes rotate-up {
+    from {
+        transform: rotateX(0);
+    }
+    to {
+        transform: rotateX(calc(-1 * var(--max-rotation)));
+    }
+}
