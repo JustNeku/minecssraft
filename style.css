@@ -1,0 +1,94 @@
+:root {
+    --block-size: 64px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100dvh;
+    background-color: #6c9aff;
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+main {
+    aspect-ratio: 1;
+    margin-inline: auto;
+    transform-style: preserve-3d;
+
+    .world {
+        transform-style: preserve-3d;
+        position: relative;
+        width: calc(var(--block-size) * 9);
+        transform: perspective(1600px) rotateX(45deg);
+    }
+
+    &>* {
+        width: 100%;
+        height: 100%;
+    }
+
+    .block {
+        transform-style: preserve-3d;
+        width: var(--block-size);
+        height: var(--block-size);
+        position: absolute;
+        background-color: red;
+        display: var(--display);
+
+        transform: 
+            translateX(calc((var(--column)) * var(--block-size)))
+            translateY(calc((var(--row)) * var(--block-size)))
+            translateZ(calc((var(--layer)) * var(--block-size)))
+        ;
+        
+        &>* {
+            width: inherit;
+            height: inherit;
+            position: absolute;
+        }
+
+        &:has(input:checked) {
+            --display: block;
+        }
+        &:not(:has(input:checked)) {
+            --display: none;
+        }
+    }
+
+    .bottom {
+        background-color: #ff0000;
+    }
+    .top {
+        background-color: #0000ff;
+        transform: translateZ(var(--block-size));
+    }
+
+    .back {
+        background-color: #ffff00;
+        transform: rotate3d(1, 0, 0, 90deg);
+        transform-origin: top;
+    }
+
+    .left {
+        background-color: #00ff00;
+        transform: rotate3d(0, 1, 0, 90deg) translateX(calc(-1 * var(--block-size) / 2)) translateZ(calc(-1 * var(--block-size) / 2))
+    }
+    .right {
+        background-color: #00ff00;
+        transform: rotate3d(0, 1, 0, 90deg) translateX(calc(-1 * var(--block-size) / 2)) translateZ(calc(var(--block-size) / 2))
+    }
+
+    .front {
+        background-color: #ff00ff;
+        transform: rotate3d(1, 0, 0, 90deg) translateY(calc(var(--block-size) / 2)) translateZ(calc(-1 * var(--block-size) / 2));
+    }
+}
