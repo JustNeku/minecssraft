@@ -373,6 +373,7 @@ main {
             outline: transparent;
             backdrop-filter: blur(8px);
             font-size: 2rem;
+            display: grid;
             place-items: center;
 
             &:hover {
@@ -464,7 +465,6 @@ main {
 }
 
 
-/** CAMERA CONTROLS **/
 .camera {
 
     &, * {
@@ -697,6 +697,8 @@ main:has(button[data-rotate="rotate-up"]:active) {
         border-top-left-radius: 0.5rem;
         border-bottom-left-radius: 0.5rem;
         background-color: #000000aa;
+        display: grid;
+        place-items: center;
 
         input {
             display: none;
